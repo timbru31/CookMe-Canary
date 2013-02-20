@@ -1,0 +1,29 @@
+# For help please refer to http://bit.ly/cookmebukkitdev or http://bit.ly/cookmebukkit
+configuration:
+  permissions: true
+  messages: true
+  duration:
+    min: 15
+    max: 30
+  noBlocks: true
+  cooldown: 30
+effects:
+  damage: 8.0
+  death: 4.0
+  venom: 8.0
+  hungervenom: 8.0
+  hungerdecrease: 8.0
+  confusion: 8.0
+  blindness: 8.0
+  weakness: 8.0
+  slowness: 8.0
+  slowness_blocks: 8.0
+  instant_damage: 8.0
+  refusing: 8.0
+  wither: 8.0
+food:
+- RAW_BEEF
+- RAW_CHICKEN
+- RAW_FISH
+- PORK
+- ROTTEN_FLESH
