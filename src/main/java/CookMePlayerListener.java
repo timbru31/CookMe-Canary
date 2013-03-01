@@ -47,15 +47,14 @@ public class CookMePlayerListener extends PluginListener {
 						}
 						// EffectStrenght, Duration etc.
 						int randomEffectStrength = random.nextInt(16);
-						int minimum = plugin.minDuration, maximum = plugin.maxDuration;
-						int randomEffectTime = (random.nextInt((maximum - minimum)  + 1)  + minimum);
+						int randomEffectTime = (random.nextInt((plugin.maxDuration - plugin.minDuration)  + 1)  +  plugin.minDuration) * 1000;
 						// Player gets random damage, stack minus 1
 						if (i == 0) {
-							//int randomDamage = random.nextInt(9) +1;
+							int randomDamage = random.nextInt(9) +1;
 							effect = plugin.localization.getString("damage");
 							message(player, effect);
 							decreaseItem(player);
-							//TODO DAMAGE player.damage(randomDamage);
+							player.applyDamage(PluginLoader.DamageType.ENTITY, randomDamage);
 						}			
 						// Player dies, stack minus 1
 						if (i == 1) {
