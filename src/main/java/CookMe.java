@@ -24,8 +24,7 @@ import java.util.logging.Logger;
 
 public class CookMe extends Plugin {
 	// Logger
-	public static Logger log = Logger.getLogger("Minecraft");
-	
+	public static final Logger log = Logger.getLogger("Minecraft");
 	private CookMePlayerListener playerListener;
 	public CooldownManager cooldownManager;
 	public PropertiesFile config, localization;
@@ -40,10 +39,10 @@ public class CookMe extends Plugin {
 	public void disable() {
 		// Disable command
 		etc.getInstance().removeCommand("/cookme");
-		
+
 		// Command
 		new CookMeCommands(this);
-		
+
 		itemList.clear();
 		cooldownManager.clearCooldownList();
 	}
@@ -54,13 +53,13 @@ public class CookMe extends Plugin {
 		etc.getInstance().addCommand("/cookme", "CookMe admin command");
 		playerListener = new CookMePlayerListener(this);
 	}
-	
+
 	public void initialize() {
 		// Event
 		etc.getLoader().addListener(PluginLoader.Hook.EAT, playerListener, this, PluginListener.Priority.MEDIUM);
 
 		config = new PropertiesFile(etc.getInstance().getConfigFolder(), "config.yml");
-		
+
 		// Localization
 		localization = new PropertiesFile(etc.getInstance().getConfigFolder(), "localization.yml");
 		loadLocalization();
@@ -73,7 +72,7 @@ public class CookMe extends Plugin {
 			log.warning("Failed to load the configs! Please report this! IOException");
 		}
 		checkStuff();
-		
+
 		// TODO config = getConfig();
 
 		// Sets the cooldown
@@ -194,21 +193,36 @@ public class CookMe extends Plugin {
 		}
 	}
 
-	// If no config is found, copy the default one!
+	// If no config is found, copy the default one(s)!
 	private void copy(InputStream in, File file) {
+		OutputStream out = null;
 		try {
-			OutputStream out = new FileOutputStream(file);
+			out = new FileOutputStream(file);
 			byte[] buf = new byte[1024];
 			int len;
 			while ((len = in.read(buf)) > 0) {
 				out.write(buf, 0, len);
 			}
-			out.close();
-			in.close();
-		} catch (FileNotFoundException e) {
-			log.warning("Failed to copy the default config! (FileNotFound)");
 		} catch (IOException e) {
 			log.warning("Failed to copy the default config! (I/O)");
+			e.printStackTrace();
+		} finally {
+			try {
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException e) {
+				log.warning("Failed to close the streams! (I/O -> Output)");
+				e.printStackTrace();
+			}
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException e) {
+				log.warning("Failed to close the streams! (I/O -> Input)");
+				e.printStackTrace();
+			}
 		}
 	}
 
