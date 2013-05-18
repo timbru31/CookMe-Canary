@@ -312,39 +312,6 @@ public class CookMe extends Plugin {
 	}
     }
 
-    // If no config is found, copy the default one(s)!
-    private void copy(InputStream in, File file) {
-	OutputStream out = null;
-	try {
-	    out = new FileOutputStream(file);
-	    byte[] buf = new byte[1024];
-	    int len;
-	    while ((len = in.read(buf)) > 0) {
-		out.write(buf, 0, len);
-	    }
-	} catch (IOException e) {
-	    log.warning("Failed to copy the default config! (I/O)");
-	    e.printStackTrace();
-	} finally {
-	    try {
-		if (out != null) {
-		    out.close();
-		}
-	    } catch (IOException e) {
-		log.warning("Failed to close the streams! (I/O -> Output)");
-		e.printStackTrace();
-	    }
-	    try {
-		if (in != null) {
-		    in.close();
-		}
-	    } catch (IOException e) {
-		log.warning("Failed to close the streams! (I/O -> Input)");
-		e.printStackTrace();
-	    }
-	}
-    }
-
     // Message the sender or player
     public void message(Player player, String message, String value, String percentage) {
 	message = message
