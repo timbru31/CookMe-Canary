@@ -12,7 +12,7 @@ Standard config:
 configuration.debug=false
 configuration.messages=true
 configuration.permissions=true
-configuration.cooldown=0
+configuration.cooldown=30
 configuration.preventVanillaPoison=false
 configuration.duration.min=15
 configuration.duration.max=30
