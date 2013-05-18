@@ -15,7 +15,7 @@ import java.util.Arrays;
  * 
  */
 
-public class CookMeCommands {
+public class CookMeCommands extends PluginListener {
     private CookMe plugin;
 
     public CookMeCommands(CookMe instance) {

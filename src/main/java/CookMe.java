@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +56,8 @@ public class CookMe extends Plugin {
     public void initialize() {
 	// Event
 	etc.getLoader().addListener(PluginLoader.Hook.EAT, playerListener, this, PluginListener.Priority.MEDIUM);
+	// Command
+	etc.getLoader().addListener(PluginLoader.Hook.COMMAND, new CookMeCommands(this), this, PluginListener.Priority.MEDIUM);
 
 	config = new PropertiesFile(etc.getInstance().getConfigFolder(), "config.yml");
 
@@ -125,6 +126,9 @@ public class CookMe extends Plugin {
 	}
 	if (!config.containsKey("configuration.duration.max")) {
 	    config.setInt("configuration.duration.max", 30);
+	}
+	if (!config.containsKey("configuration.preventVanillaPoison")) {
+	    config.setBoolean("configuration.preventVanillaPoison", false);
 	}
 	if (!config.containsKey("effects.damage")) {
 	    config.setInt("configuration.cooldown", 30);

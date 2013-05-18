@@ -55,7 +55,7 @@ public class CookMePlayerListener extends PluginListener {
 			    effect = plugin.localization.getString("damage");
 			    message(player, effect);
 			    decreaseItem(player);
-			    player.applyDamage(PluginLoader.DamageType.ENTITY, randomDamage);
+			    player.applayDamage(DamageSource.createPlayerDamage(player), randomDamage);
 			}			
 			// Player dies, stack minus 1
 			if (i == 1) {
