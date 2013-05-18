@@ -31,7 +31,7 @@ public class CookMe extends Plugin {
     public List<String> itemList = new ArrayList<String>();
     public int cooldown, minDuration,maxDuration;
     public double[] percentages = new double[13];
-    public boolean messages, permissions;
+    public boolean messages, permissions, preventVanillaPoison;
     private String rawFood = "RawBeef,RawChicken,RawFish,Pork,RottenFlesh";
     public String[] effects = {"damage", "death", "venom", "hungervenom", "hungerdecrease", "confusion", "blindness", "weakness", "slowness", "slowness_blocks", "instant_damage", "refusing", "wither"};	
 

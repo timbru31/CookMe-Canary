@@ -1,7 +1,6 @@
 import java.sql.Timestamp;
 import java.util.Random;
 
-
 /**
  * CookMePlayerListener
  * Handles the players activities!
@@ -158,6 +157,27 @@ public class CookMePlayerListener extends PluginListener {
 			}
 		    }
 		}
+	    }
+	} else if (plugin.preventVanillaPoison) {
+	    // Prevent the vanilla poison, too?
+	    if (item.getType() == Item.Type.RawChicken || item.getType() == Item.Type.RottenFlesh) {
+		int foodLevel = player.getFoodLevel();
+		// Case chicken
+		if (item.getType() == Item.Type.RawChicken) {
+		    // Quote: 1 unit of hunger (2 hunger)
+		    foodLevel += 2;
+		} else if (item.getType() == Item.Type.RottenFlesh) {
+		    // Case rotten flesh
+		    // Quote: 2 units of hunger (4 hunger)
+		    foodLevel += 4;
+		}
+		// Not higher than 20
+		if (foodLevel > 20) {
+		    foodLevel = 20;
+		}
+		player.setFoodLevel(foodLevel);
+		decreaseItem(player);
+		return true;
 	    }
 	}
 	return false;

@@ -23,6 +23,8 @@ configuration:
   noBlocks: true
   # Cooldown in seconds, how long the player is safe before the next effect happens.
   cooldown: 30
+  # Should the vanilla poison from raw chicken and rotten flesh be prevented if the player has the permission cookme.safe
+  preventVanillaPoison: false
 # The percentage for each effect. Make sure all together are exactly 100! 0 means disabled!
 effects:
   damage: 8.0
