@@ -27,12 +27,12 @@
 	<dependency>
    	 	<groupId>net.canarymod</groupId>
     	<artifactId>CanaryMod</artifactId>
-    	<version>b5.7.11</version>
+    	<version>b6.1.12</version>
 	</dependency>
 	<dependency>
   	  <groupId>net.canarymod</groupId>
     	<artifactId>minecraft_servero</artifactId>
-   	 <version>b5.7.11</version>
+   	 <version>b6.1.12</version>
 	</dependency>
 	</dependencies>
 	
@@ -45,7 +45,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.0</version>
 				<configuration>
 					<verbose>true</verbose>
 					<fork>true</fork>
