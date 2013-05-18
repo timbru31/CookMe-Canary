@@ -1,12 +1,7 @@
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
@@ -50,6 +45,8 @@ public class CookMe extends Plugin {
 
 	itemList.clear();
 	cooldownManager.clearCooldownList();
+	
+	log.info(name + " " + version + " by " + author + " disabled");
     }
 
     // Start
@@ -101,6 +98,8 @@ public class CookMe extends Plugin {
 	    log.warning("Could not start Metrics!");
 	    e.printStackTrace();
 	}
+	
+	log.info(name + " " + version + " by " + author + " initialized");
     }
 
     private void checkStuff() {
