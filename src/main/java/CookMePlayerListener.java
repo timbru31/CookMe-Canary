@@ -31,7 +31,7 @@ public class CookMePlayerListener extends PluginListener {
 	//TODO if (!player.hasPermission("cookme.safe")) {
 	if (!player.isAdmin()) {
 	    // Check for item & right clicking
-	    if (sameItem(player.getItemStackInHand().getItemId())) {
+	    if (sameItem(item)) {
 		// If the player is in cooldown phase cancel it
 		if (!plugin.cooldownManager.hasCooldown(player, now)) {
 		    // Check for food level
@@ -190,26 +190,31 @@ public class CookMePlayerListener extends PluginListener {
     }
 
     // Is the item in the list? Yes or no
-    private boolean sameItem(int item) {
+    private boolean sameItem(Item item) {
 	for (String itemName : plugin.itemList) {
 	    // Get the Material
 	    try {
-		Item.Type mat = Item.Type.valueOf(itemName);
-		// Get ID & compare
-		if (mat.getId() == item) {
+		int ID = Integer.valueOf(itemName);
+		if (ID == item.getItemId()) {
 		    return true;
 		}
-	    }
-	    // Not valid
-	    catch (IllegalArgumentException e) {
-		// Prevent spamming
-		if (message) {
-		    CookMe.log.warning("Couldn't load the foods! Please check your config!");
-		    CookMe.log.warning("The following item id/name is invalid: " + itemName);
-		    message = false;
+	    } catch (NumberFormatException e) {
+		try {
+		    Item.Type mat = Item.Type.valueOf(itemName);
+		    // Get ID & compare
+		    if (mat == item.getType()) {
+			return true;
+		    }
 		}
-		// Go on
-		continue;
+		// Not valid
+		catch (IllegalArgumentException e2) {
+		    // Prevent spamming
+		    if (message) {
+			CookMe.log.warning("Couldn't load the foods! Please check your config!");
+			CookMe.log.warning("The following item id/name is invalid: " + itemName);
+			message = false;
+		    }
+		}
 	    }
 	}
 	return false;
