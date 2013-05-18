@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.mcstats.Metrics;
+import org.mcstats.Metrics.Graph;
+
 /**
  * CookeMe for CraftBukkit/Bukkit
  * Handles some general stuff!
@@ -79,6 +82,25 @@ public class CookMe extends Plugin {
 
 	// Sets the cooldown
 	cooldownManager = new CooldownManager(cooldown);
+	
+	// Stats
+	try {
+	    Metrics metrics = new Metrics("CookMe", "1.0");
+	    // Construct a graph, which can be immediately used and considered as valid
+	    Graph graph = metrics.createGraph("Percentage of affected items");
+	    // Custom plotter for each item
+	    for (String itemName : itemList) {
+		graph.addPlotter(new Metrics.Plotter(itemName) {
+		    public int getValue() {
+			return 1;
+		    }
+		});
+	    }
+	    metrics.start();
+	} catch (IOException e) {
+	    log.warning("Could not start Metrics!");
+	    e.printStackTrace();
+	}
     }
 
     private void checkStuff() {

@@ -29,7 +29,7 @@ public class CookMePlayerListener extends PluginListener {
 	Timestamp now = new Timestamp(System.currentTimeMillis());
 	// Check if player is affected
 	//TODO if (!player.hasPermission("cookme.safe")) {
-	if (!player.isAdmin()) {
+	if (!player.canUseCommand("/cookme safe")) {
 	    // Check for item & right clicking
 	    if (sameItem(item)) {
 		// If the player is in cooldown phase cancel it

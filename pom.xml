@@ -6,38 +6,47 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>CookMe</name>
 	<description>Beware of raw food!</description>
-	
+
 	<!-- Encode in UTF-8 -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<!-- Repositories -->
 	<repositories>
-    <repository>
-        <id>Dustplanet</id>
-        <name>Dustplanet-releases</name>
-        <url>http://repo.dustplanet.de/artifactory/ext-release-local</url>
-    </repository>
-
+		<repository>
+			<id>Dustplanet</id>
+			<name>Dustplanet-releases</name>
+			<url>http://repo.dustplanet.de/artifactory/ext-release-local</url>
+		</repository>
+		<repository>
+			<id>Plugin Metrics</id>
+			<url>http://repo.mcstats.org/content/repositories/public</url>
+		</repository>
 	</repositories>
-	
+
 	<!-- Dependencies -->
 	<dependencies>
-	<dependency>
-   	 	<groupId>net.canarymod</groupId>
-    	<artifactId>CanaryMod</artifactId>
-    	<version>b6.1.12</version>
-	</dependency>
-	<dependency>
-  	  <groupId>net.canarymod</groupId>
-    	<artifactId>minecraft_servero</artifactId>
-   	 <version>b6.1.12</version>
-	</dependency>
+		<dependency>
+			<groupId>net.canarymod</groupId>
+			<artifactId>CanaryMod</artifactId>
+			<version>b6.1.12</version>
+		</dependency>
+		<dependency>
+			<groupId>net.canarymod</groupId>
+			<artifactId>minecraft_servero</artifactId>
+			<version>b6.1.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mcstats.canary</groupId>
+			<artifactId>metrics</artifactId>
+			<version>R6</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
-	
+
 	<build>
-	<!-- Compile for 1.6 and clean before -->
+		<!-- Compile for 1.6 and clean before -->
 		<defaultGoal>clean compile package</defaultGoal>
 		<sourceDirectory>${basedir}/src/main/java</sourceDirectory>
 		<finalName>CookMe</finalName>
@@ -54,8 +63,31 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<!-- Shade Plugin to include Metrics -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.0</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<includes>
+									<include>org.mcstats.canary:metrics</include>
+								</includes>
+							</artifactSet>
+							<!-- Set the final name -->
+							<finalName>CookMe</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
-		
+
 		<!-- Include .yml files -->
 		<resources>
 			<resource>
@@ -63,23 +95,22 @@
 				<filtering>true</filtering>
 				<directory>${basedir}/src/main/resources</directory>
 				<includes>
-					<include>plugin.yml</include>
-					<include>config.yml</include>
-					<include>localization.yml</include>
+					<include>config.properties</include>
+					<include>localization.properties</include>
 					<include>README.txt</include>
 				</includes>
 			</resource>
 		</resources>
 	</build>
 
-<!-- Github information -->
+	<!-- Github information -->
 	<scm>
 		<url>https://github.com/xGhOsTkiLLeRx/CookMe-Canary</url>
 		<connection>scm:git:git://github.com/xGhOsTkiLLeRx/CookMe-Canary.git</connection>
 		<tag>master</tag>
 		<developerConnection>scm:git:git@github.com:xGhOsTkiLLeRx/CookMe-Canary.git</developerConnection>
 	</scm>
-	
+
 	<!-- Jenkins information -->
 	<ciManagement>
 		<url>http://ci.dustplanet.de/job/CookMe-Canary</url>
