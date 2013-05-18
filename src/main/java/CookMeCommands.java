@@ -1,6 +1,5 @@
 import java.util.Arrays;
 
-
 /**
  * CookMe for CraftBukkit/Bukkit
  * Handles the commands!
@@ -24,132 +23,136 @@ public class CookMeCommands extends PluginListener {
 
     // Commands; always check for permissions!
     public boolean onCommand (Player player, String[] args) {
-	// reload
-	if (player.canUseCommand("/cookme") || !plugin.permissions) {
-	    if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
-		CookMeReload(player);
-		return true;
-	    }
-	    // help
-	    if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
-		CookMeHelp(player);	
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-	// Set cooldown, duration or percentage of an effect
-	if (args.length > 1 && args[0].equalsIgnoreCase("set")) {
-	    if (args[1].equalsIgnoreCase("cooldown")) {
-		if (args.length > 2) {
-		    int cooldown = 0;
-		    try {
-			cooldown = Integer.valueOf(args[2]);
+	if (args[0].equalsIgnoreCase("/cookme")) {
+	    // reload
+	    if (player.canUseCommand("/cookme") || !plugin.permissions) {
+		if (args.length > 1 && args[1].equalsIgnoreCase("reload")) {
+		    CookMeReload(player);
+		    return true;
+		}
+		// help
+		else if (args[1].equalsIgnoreCase("help")) {
+		    CookMeHelp(player);	
+		    return true;
+		} else if (args.length > 1 && args[1].equalsIgnoreCase("debug") && plugin.debug) {
+		    player.setFoodLevel(10);
+		    player.sendMessage("§2Food level reduced!");
+		    return true;
+		}
+		// Set cooldown, duration or percentage of an effect
+		else if (args.length > 2 && args[1].equalsIgnoreCase("set")) {
+		    if (args[1].equalsIgnoreCase("cooldown")) {
+			if (args.length > 3) {
+			    int cooldown = 0;
+			    try {
+				cooldown = Integer.valueOf(args[3]);
+			    }
+			    // Cooldown not a number?
+			    catch (NumberFormatException e) {
+				String message = plugin.localization.getString("no_number");
+				plugin.message(player, message, null, null);
+				return true;
+			    }
+			    plugin.config.setInt("configuration.cooldown", cooldown);
+			    plugin.config.save();
+			    String message = plugin.localization.getString("changed_cooldown");
+			    plugin.message(player, message, Integer.toString(cooldown), null);
+			    plugin.cooldownManager.setCooldown(cooldown);
+			    return true;
+			} else {
+			    return false;
+			}
 		    }
-		    // Cooldown not a number?
-		    catch (NumberFormatException e) {
-			String message = plugin.localization.getString("no_number");
-			plugin.message(player, message, null, null);
+		    // Duration
+		    else if (args[2].equalsIgnoreCase("duration") && args.length > 3) {
+			// Max or Min
+			if (args[3].equalsIgnoreCase("max") || args[3].equalsIgnoreCase("min")) {
+			    if (args.length > 4) {
+				int duration = 0;
+				try {
+				    duration = Integer.valueOf(args[4]);
+				}
+				// Duration not a number?
+				catch (NumberFormatException e) {
+				    String message = plugin.localization.getString("no_number");
+				    plugin.message(player, message, null, null);
+				    return true;
+				}
+				plugin.config.setInt("configuration.duration." + args[2].toLowerCase(), duration);
+				plugin.config.save();
+				String message = plugin.localization.getString("changed_duration_" + args[2].toLowerCase());
+				plugin.message(player, message, Integer.toString(duration), null);
+				return true;
+			    } else {
+				return false;
+			    }
+			} else {
+			    return false;
+			}
+		    }
+		    // Effect
+		    else if (Arrays.asList(plugin.effects).contains(args[2].toLowerCase())) {
+			String effect = args[2].toLowerCase();
+			if (args.length > 3) {
+			    double percentage = 0.0;
+			    try {
+				percentage = Double.valueOf(args[3]);
+			    }
+			    // Percentage not a number?
+			    catch (NumberFormatException e) {
+				String message = plugin.localization.getString("no_number");
+				plugin.message(player, message, null, null);
+				return true;
+			    }
+			    plugin.config.setDouble("effects." + effect.toLowerCase(), percentage);
+			    plugin.config.save();
+			    String message = plugin.localization.getString("changed_effect");
+			    plugin.message(player, message, effect, Double.toString(percentage));
+			    return true;
+			} else {
+			    return false;
+			}
+		    } else {
+			return false;
+		    }
+		}
+		// enable
+		else if (args.length > 1 && args[1].equalsIgnoreCase("enable")) {
+		    // permissions
+		    if (args.length > 2 && args[2].equalsIgnoreCase("permissions")) {
+			CookMeEnablePermissions(player);
 			return true;
 		    }
-		    plugin.config.setInt("configuration.cooldown", cooldown);
-		    plugin.config.save();
-		    String message = plugin.localization.getString("changed_cooldown");
-		    plugin.message(player, message, Integer.toString(cooldown), null);
-		    plugin.cooldownManager.setCooldown(cooldown);
-		    return true;
-		} else {
-		    return false;
-		}
-	    } else {
-		return false;
-	    }
-	}
-	// Duration
-	if (args[1].equalsIgnoreCase("duration") && args.length > 2) {
-	    // Max or Min
-	    if (args[2].equalsIgnoreCase("max") || args[2].equalsIgnoreCase("min")) {
-		if (args.length > 3) {
-		    int duration = 0;
-		    try {
-			duration = Integer.valueOf(args[3]);
+		    // messages
+		    if (args.length > 2 && args[2].equalsIgnoreCase("messages")) {
+			CookMeEnableMessages(player);
+			return true;
+		    } else {
+			return false;
 		    }
-		    // Duration not a number?
-		    catch (NumberFormatException e) {
-			String message = plugin.localization.getString("no_number");
-			plugin.message(player, message, null, null);
+		}
+		// disable
+		else if (args.length > 1 && args[1].equalsIgnoreCase("disable")) {
+		    // permissions
+		    if (args.length > 2 && args[2].equalsIgnoreCase("permissions")) {
+			CookMeDisablePermissions(player);
 			return true;
 		    }
-		    plugin.config.setInt("configuration.duration." + args[2].toLowerCase(), duration);
-		    plugin.config.save();
-		    String message = plugin.localization.getString("changed_duration_" + args[2].toLowerCase());
-		    plugin.message(player, message, Integer.toString(duration), null);
-		    return true;
-		} else {
-		    return false;
+		    // messages
+		    if (args.length > 2 && args[2].equalsIgnoreCase("messages")) {
+			CookMeDisableMessages(player);
+			return true;
+		    } else {
+			return false;
+		    }
 		}
 	    } else {
-		return false;
-	    }
-	}
-	// Effect
-	if (Arrays.asList(plugin.effects).contains(args[1].toLowerCase())) {
-	    String effect = args[1].toLowerCase();
-	    if (args.length > 2) {
-		double percentage = 0.0;
-		try {
-		    percentage = Double.valueOf(args[2]);
-		}
-		// Percentage not a number?
-		catch (NumberFormatException e) {
-		    String message = plugin.localization.getString("no_number");
-		    plugin.message(player, message, null, null);
-		    return true;
-		}
-		plugin.config.setDouble("effects." + effect.toLowerCase(), percentage);
-		plugin.config.save();
-		String message = plugin.localization.getString("changed_effect");
-		plugin.message(player, message, effect, Double.toString(percentage));
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-	// enable
-	if (args.length > 0 && args[0].equalsIgnoreCase("enable")) {
-	    // permissions
-	    if (args.length > 1 && args[1].equalsIgnoreCase("permissions")) {
-		CookMeEnablePermissions(player);
+		String message = plugin.localization.getString("permission_denied");
+		plugin.message(player, message, null, null);
 		return true;
 	    }
-	    // messages
-	    if (args.length > 1 && args[1].equalsIgnoreCase("messages")) {
-		CookMeEnableMessages(player);
-		return true;
-	    } else {
-		return false;
-	    }
 	}
-	// disable
-	if (args.length > 0 && args[0].equalsIgnoreCase("disable")) {
-	    // permissions
-	    if (args.length > 1 && args[1].equalsIgnoreCase("permissions")) {
-		CookMeDisablePermissions(player);
-		return true;
-	    }
-	    // messages
-	    if (args.length > 1 && args[1].equalsIgnoreCase("messages")) {
-		CookMeDisableMessages(player);
-		return true;
-	    } else {
-		return false;
-	    }
-	}
-	else {
-	    String message = plugin.localization.getString("permission_denied");
-	    plugin.message(player, message, null, null);
-	    return true;
-	}
+	return false;
     }
 
     // See the help with /cookme help

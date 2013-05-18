@@ -24,13 +24,16 @@ import java.util.logging.Logger;
 public class CookMe extends Plugin {
     // Logger
     public static final Logger log = Logger.getLogger("Minecraft");
+    private String name = "CookMe";
+    private String version = "1.0";
+    private String author = "xGhOsTkiLLeRx";
     private CookMePlayerListener playerListener;
     public CooldownManager cooldownManager;
     public PropertiesFile config, localization;
     public List<String> itemList = new ArrayList<String>();
     public int cooldown, minDuration,maxDuration;
     public double[] percentages = new double[13];
-    public boolean messages, permissions, preventVanillaPoison;
+    public boolean debug, messages, permissions, preventVanillaPoison;
     private String rawFood = "RawBeef,RawChicken,RawFish,Pork,RottenFlesh";
     public String[] effects = {"damage", "death", "venom", "hungervenom", "hungerdecrease", "confusion", "blindness", "weakness", "slowness", "slowness_blocks", "instant_damage", "refusing", "wither"};	
 
@@ -59,10 +62,10 @@ public class CookMe extends Plugin {
 	// Command
 	etc.getLoader().addListener(PluginLoader.Hook.COMMAND, new CookMeCommands(this), this, PluginListener.Priority.MEDIUM);
 
-	config = new PropertiesFile(etc.getInstance().getConfigFolder(), "config.yml");
+	config = etc.getLoader().getPlugin(name).getPropertiesFile("config");
 
 	// Localization
-	localization = new PropertiesFile(etc.getInstance().getConfigFolder(), "localization.yml");
+	localization = etc.getLoader().getPlugin(name).getPropertiesFile("localization");
 	loadLocalization();
 	loadConfig();
 	// Try to load
@@ -74,8 +77,6 @@ public class CookMe extends Plugin {
 	}
 	checkStuff();
 
-	// TODO config = getConfig();
-
 	// Sets the cooldown
 	cooldownManager = new CooldownManager(cooldown);
     }
@@ -86,6 +87,8 @@ public class CookMe extends Plugin {
 	cooldown = config.getInt("configuration.cooldown");
 	minDuration = 20 * config.getInt("configuration.duration.min");
 	maxDuration = 20 * config.getInt("configuration.duration.max");
+	debug = config.getBoolean("configuration.debug");
+	preventVanillaPoison = config.getBoolean("configuration.preventVanillaPoison", false);
 	String[] tempArray = config.getString("food").split(",");
 	for (String tempString : tempArray) {
 	    itemList.add(tempString);
@@ -127,11 +130,14 @@ public class CookMe extends Plugin {
 	if (!config.containsKey("configuration.duration.max")) {
 	    config.setInt("configuration.duration.max", 30);
 	}
+	if (!config.containsKey("configuration.cooldown")) {
+	    config.setInt("configuration.cooldown", 30);
+	}
+	if (!config.containsKey("configuration.debug")) {
+	    config.setBoolean("configuration.debug", false);
+	}
 	if (!config.containsKey("configuration.preventVanillaPoison")) {
 	    config.setBoolean("configuration.preventVanillaPoison", false);
-	}
-	if (!config.containsKey("effects.damage")) {
-	    config.setInt("configuration.cooldown", 30);
 	}
 	if (!config.containsKey("effects.death")) {
 	    config.setDouble("effects.damage", 8.0);
