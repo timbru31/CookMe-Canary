@@ -64,8 +64,11 @@ public class CooldownManager {
 	    Timestamp time = cooldownList.get(player.getName());
 	    long difference = (now.getTime()- time.getTime()) / 1000;
 	    // If the difference is bigger than the cooldown time -> no cooldown anymore
-	    if (difference > cooldown) removePlayer(player);
-	    else return true;
+	    if (difference > cooldown) {
+		removePlayer(player);
+	    } else {
+		return true;
+	    }
 	}
 	return false;
     }
@@ -81,8 +84,11 @@ public class CooldownManager {
 	    Timestamp time = cooldownList.get(player.getName());
 	    long difference = (now.getTime()- time.getTime()) / 1000;
 	    // If the difference is bigger than the cooldown time -> no cooldown anymore
-	    if (difference > cooldown) return 0;
-	    else return difference;
+	    if (difference > cooldown) {
+		return 0;
+	    } else {
+		return difference;
+	    }
 	}
 	return 0;
     }

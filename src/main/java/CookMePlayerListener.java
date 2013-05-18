@@ -43,7 +43,9 @@ public class CookMePlayerListener extends PluginListener {
 			// Get the number for the effect
 			for(i = 0; i < plugin.percentages.length; i++) {
 			    temp += plugin.percentages[i];
-			    if (random.nextInt(100) <= temp) break;
+			    if (random.nextInt(100) <= temp) {
+				break;
+			    }
 			}
 			// EffectStrenght, Duration etc.
 			int randomEffectStrength = random.nextInt(16);
@@ -151,7 +153,9 @@ public class CookMePlayerListener extends PluginListener {
 			}
 
 			// Add player to cooldown list
-			if (plugin.cooldown != 0) plugin.cooldownManager.addPlayer(player);
+			if (plugin.cooldown != 0) {
+			    plugin.cooldownManager.addPlayer(player);
+			}
 		    }
 		}
 	    }
@@ -172,7 +176,9 @@ public class CookMePlayerListener extends PluginListener {
 	    try {
 		Item.Type mat = Item.Type.valueOf(itemName);
 		// Get ID & compare
-		if (mat.getId() == item) return true;
+		if (mat.getId() == item) {
+		    return true;
+		}
 	    }
 	    // Not valid
 	    catch (IllegalArgumentException e) {
@@ -192,7 +198,9 @@ public class CookMePlayerListener extends PluginListener {
     // Sets the raw food -1
     private void decreaseItem (Player player) {
 	Item afterEating = player.getItemStackInHand();
-	if (afterEating.getAmount() == 1) player.setItemInHand(null);
+	if (afterEating.getAmount() == 1) {
+	    player.setItemInHand(null);
+	}
 	else {
 	    afterEating.setAmount(afterEating.getAmount() - 1);
 	    player.setItemInHand(afterEating);

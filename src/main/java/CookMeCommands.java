@@ -34,8 +34,9 @@ public class CookMeCommands {
 	    if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
 		CookMeHelp(player);	
 		return true;
+	    } else {
+		return false;
 	    }
-	    else return false;
 	}
 	// Set cooldown, duration or percentage of an effect
 	if (args.length > 1 && args[0].equalsIgnoreCase("set")) {
@@ -57,10 +58,12 @@ public class CookMeCommands {
 		    plugin.message(player, message, Integer.toString(cooldown), null);
 		    plugin.cooldownManager.setCooldown(cooldown);
 		    return true;
+		} else {
+		    return false;
 		}
-		else return false;
+	    } else {
+		return false;
 	    }
-	    else return false;
 	}
 	// Duration
 	if (args[1].equalsIgnoreCase("duration") && args.length > 2) {
@@ -82,10 +85,12 @@ public class CookMeCommands {
 		    String message = plugin.localization.getString("changed_duration_" + args[2].toLowerCase());
 		    plugin.message(player, message, Integer.toString(duration), null);
 		    return true;
+		} else {
+		    return false;
 		}
-		else return false;
+	    } else {
+		return false;
 	    }
-	    else return false;
 	}
 	// Effect
 	if (Arrays.asList(plugin.effects).contains(args[1].toLowerCase())) {
@@ -106,8 +111,9 @@ public class CookMeCommands {
 		String message = plugin.localization.getString("changed_effect");
 		plugin.message(player, message, effect, Double.toString(percentage));
 		return true;
+	    } else {
+		return false;
 	    }
-	    else return false;
 	}
 	// enable
 	if (args.length > 0 && args[0].equalsIgnoreCase("enable")) {
@@ -120,8 +126,9 @@ public class CookMeCommands {
 	    if (args.length > 1 && args[1].equalsIgnoreCase("messages")) {
 		CookMeEnableMessages(player);
 		return true;
+	    } else {
+		return false;
 	    }
-	    else return false;
 	}
 	// disable
 	if (args.length > 0 && args[0].equalsIgnoreCase("disable")) {
@@ -134,8 +141,9 @@ public class CookMeCommands {
 	    if (args.length > 1 && args[1].equalsIgnoreCase("messages")) {
 		CookMeDisableMessages(player);
 		return true;
+	    } else {
+		return false;
 	    }
-	    else return false;
 	}
 	else {
 	    String message = plugin.localization.getString("permission_denied");
