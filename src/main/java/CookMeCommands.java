@@ -1,16 +1,13 @@
 import java.util.Arrays;
 
 /**
- * CookMe for CraftBukkit/Bukkit
+ * CookMe for Canary (legacy)
  * Handles the commands!
  * 
  * Refer to the forum thread:
- * http://bit.ly/cookmebukkit
- * Refer to the dev.bukkit.org page:
- * http://bit.ly/cookmebukkitdev
+ * http://forums.canarymod.net/?topic=3523.0
  *
  * @author xGhOsTkiLLeRx
- * @thanks nisovin for his awesome code snippet!
  * 
  */
 

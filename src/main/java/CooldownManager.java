@@ -3,16 +3,13 @@ import java.util.LinkedHashMap;
 
 
 /**
- * CookeMe for CraftBukkit/Bukkit
+ * CookeMe for Canary (legacy)
  * Handles the cooldown
  * 
  * Refer to the forum thread:
- * http://bit.ly/cookmebukkit
- * Refer to the dev.bukkit.org page:
- * http://bit.ly/cookmebukkitdev
+ * http://forums.canarymod.net/?topic=3523.0
  *
  * @author xGhOsTkiLLeRx
- * @thanks nisovin for his awesome code snippet!
  * 
  */
 

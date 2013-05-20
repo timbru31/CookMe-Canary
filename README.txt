@@ -1,5 +1,5 @@
 This is the README of CookMe!
-For support visit the thread here: [PLACEHOLDER]
+For support visit the thread here: http://forums.canarymod.net/?topic=3523.0
 Thanks for using!
 
 This plugin sends usage statistics! If you wish to disable the usage stats, look at plugins/PluginMetrics/config.txt!

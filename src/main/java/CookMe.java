@@ -6,16 +6,13 @@ import org.mcstats.Metrics;
 import org.mcstats.Metrics.Graph;
 
 /**
- * CookeMe for CraftBukkit/Bukkit
+ * CookeMe for Canary (legacy)
  * Handles some general stuff!
  * 
  * Refer to the forum thread:
- * http://bit.ly/cookmebukkit
- * Refer to the dev.bukkit.org page:
- * http://bit.ly/cookmebukkitdev
+ * http://forums.canarymod.net/?topic=3523.0
  *
  * @author xGhOsTkiLLeRx
- * @thanks nisovin for his awesome code snippet!
  * 
  */
 
