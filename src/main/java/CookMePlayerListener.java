@@ -28,131 +28,126 @@ public class CookMePlayerListener extends PluginListener {
 	//TODO if (!player.hasPermission("cookme.safe")) {
 	if (!player.canUseCommand("/cookme safe")) {
 	    // Check for item & right clicking
-	    if (sameItem(item)) {
-		// If the player is in cooldown phase cancel it
-		if (!plugin.cooldownManager.hasCooldown(player, now)) {
-		    // Check for food level
-		    if (player.getFoodLevel() != 20) {
-			// Make a temp double and a value between 0 and 99
-			double temp = 0;
-			int i = 0;
-			// Get the number for the effect
-			for(i = 0; i < plugin.percentages.length; i++) {
-			    temp += plugin.percentages[i];
-			    if (random.nextInt(100) <= temp) {
-				break;
-			    }
-			}
-			// EffectStrenght, Duration etc.
-			int randomEffectStrength = random.nextInt(16);
-			int randomEffectTime = (random.nextInt((plugin.maxDuration - plugin.minDuration)  + 1)  +  plugin.minDuration);
-			// Player gets random damage, stack minus 1
-			if (i == 0) {
-			    int randomDamage = random.nextInt(9) +1;
-			    effect = plugin.localization.getString("damage");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.applayDamage(DamageSource.createPlayerDamage(player), randomDamage);
-			}			
-			// Player dies, stack minus 1
-			if (i == 1) {
-			    effect = plugin.localization.getString("death");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.setHealth(0);
-			}
-			// Random venom damage (including green hearts :) )
-			if (i == 2) {
-			    effect = plugin.localization.getString("venom");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.POISON, randomEffectStrength, randomEffectTime));
-			}
-			// Food bar turns green (poison)
-			if (i == 3) {
-			    effect = plugin.localization.getString("hungervenom");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.HUNGER, randomEffectStrength, randomEffectTime));
-			}
-			// Sets the food level down. Stack minus 1
-			if (i == 4) {
-			    int currentFoodLevel = player.getFoodLevel();
-			    int randomFoodLevel = 0;
-			    if (currentFoodLevel != 0) {
-				randomFoodLevel = random.nextInt(currentFoodLevel);
-			    }
-			    effect = plugin.localization.getString("hungerdecrease");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.setFoodLevel(randomFoodLevel);
-			}
-			// Confusion
-			if (i == 5) {
-			    effect = plugin.localization.getString("confusion");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.CONFUSION, randomEffectStrength, randomEffectTime));
-			}
-			// Blindness
-			if (i == 6) {
-			    effect = plugin.localization.getString("blindness");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.BLINDNESS, randomEffectStrength, randomEffectTime));
-			}
-
-			// Weakness
-			if (i == 7) {
-			    effect = plugin.localization.getString("weakness");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.WEAKNESS, randomEffectStrength, randomEffectTime));
-
-			}
-			// Slowness
-			if (i == 8) {
-			    effect = plugin.localization.getString("slowness");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.SLOW_DOWN, randomEffectStrength, randomEffectTime));
-
-			}
-			// Slowness for blocks
-			if (i == 9) {
-			    effect = plugin.localization.getString("slowness_blocks");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.DIG_SLOW, randomEffectStrength, randomEffectTime));
-
-			}
-			// Instant Damage
-			if (i == 10) {
-			    effect = plugin.localization.getString("instant_damage");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.HARM, randomEffectStrength, randomEffectTime));
-
-			}
-			// Refusing
-			if (i == 11) {
-			    effect = plugin.localization.getString("refusing");
-			    message(player, effect);
-			    return true;
-			}
-			// Wither effect
-			if (i == 12) {
-			    effect = plugin.localization.getString("wither");
-			    message(player, effect);
-			    decreaseItem(player);
-			    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.WITHER, randomEffectStrength, randomEffectTime));
-			}
-
-			// Add player to cooldown list
-			if (plugin.cooldown != 0) {
-			    plugin.cooldownManager.addPlayer(player);
-			}
+	    if (sameItem(item) && !plugin.cooldownManager.hasCooldown(player, now)) {
+		// Check for food level
+		// Make a temp double and a value between 0 and 99
+		double temp = 0;
+		int i = 0;
+		// Get the number for the effect
+		for(i = 0; i < plugin.percentages.length; i++) {
+		    temp += plugin.percentages[i];
+		    if (random.nextInt(100) <= temp) {
+			break;
 		    }
+		}
+		// EffectStrenght, Duration etc.
+		int randomEffectStrength = random.nextInt(16);
+		int randomEffectTime = (random.nextInt((plugin.maxDuration - plugin.minDuration)  + 1)  +  plugin.minDuration);
+		// Player gets random damage, stack minus 1
+		if (i == 0) {
+		    int randomDamage = random.nextInt(9) +1;
+		    effect = plugin.localization.getString("damage");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.applayDamage(DamageSource.createPlayerDamage(player), randomDamage);
+		}			
+		// Player dies, stack minus 1
+		if (i == 1) {
+		    effect = plugin.localization.getString("death");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.setHealth(0);
+		}
+		// Random venom damage (including green hearts :) )
+		if (i == 2) {
+		    effect = plugin.localization.getString("venom");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.POISON, randomEffectStrength, randomEffectTime));
+		}
+		// Food bar turns green (poison)
+		if (i == 3) {
+		    effect = plugin.localization.getString("hungervenom");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.HUNGER, randomEffectStrength, randomEffectTime));
+		}
+		// Sets the food level down. Stack minus 1
+		if (i == 4) {
+		    int currentFoodLevel = player.getFoodLevel();
+		    int randomFoodLevel = 0;
+		    if (currentFoodLevel != 0) {
+			randomFoodLevel = random.nextInt(currentFoodLevel);
+		    }
+		    effect = plugin.localization.getString("hungerdecrease");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.setFoodLevel(randomFoodLevel);
+		}
+		// Confusion
+		if (i == 5) {
+		    effect = plugin.localization.getString("confusion");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.CONFUSION, randomEffectStrength, randomEffectTime));
+		}
+		// Blindness
+		if (i == 6) {
+		    effect = plugin.localization.getString("blindness");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.BLINDNESS, randomEffectStrength, randomEffectTime));
+		}
+
+		// Weakness
+		if (i == 7) {
+		    effect = plugin.localization.getString("weakness");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.WEAKNESS, randomEffectStrength, randomEffectTime));
+
+		}
+		// Slowness
+		if (i == 8) {
+		    effect = plugin.localization.getString("slowness");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.SLOW_DOWN, randomEffectStrength, randomEffectTime));
+
+		}
+		// Slowness for blocks
+		if (i == 9) {
+		    effect = plugin.localization.getString("slowness_blocks");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.DIG_SLOW, randomEffectStrength, randomEffectTime));
+
+		}
+		// Instant Damage
+		if (i == 10) {
+		    effect = plugin.localization.getString("instant_damage");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.HARM, randomEffectStrength, randomEffectTime));
+
+		}
+		// Refusing
+		if (i == 11) {
+		    effect = plugin.localization.getString("refusing");
+		    message(player, effect);
+		    return true;
+		}
+		// Wither effect
+		if (i == 12) {
+		    effect = plugin.localization.getString("wither");
+		    message(player, effect);
+		    decreaseItem(player);
+		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.WITHER, randomEffectStrength, randomEffectTime));
+		}
+
+		// Add player to cooldown list
+		if (plugin.cooldown != 0) {
+		    plugin.cooldownManager.addPlayer(player);
 		}
 	    }
 	} else if (plugin.preventVanillaPoison) {
