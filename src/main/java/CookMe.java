@@ -40,9 +40,6 @@ public class CookMe extends Plugin {
 	// Disable command
 	etc.getInstance().removeCommand("/cookme");
 
-	// Command
-	new CookMeCommands(this);
-
 	itemList.clear();
 	cooldownManager.clearCooldownList();
 	
@@ -52,6 +49,7 @@ public class CookMe extends Plugin {
     // Start
     public void enable() {
 	// Command
+	new CookMeCommands(this);
 	etc.getInstance().addCommand("/cookme", "CookMe admin command");
 	playerListener = new CookMePlayerListener(this);
     }
