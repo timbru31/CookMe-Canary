@@ -57,8 +57,8 @@
 				<filtering>true</filtering>
 				<directory>${basedir}/src/main/resources</directory>
 				<includes>
-					<include>config.properties</include>
-					<include>localization.properties</include>
+					<include>CookMe.cfg</include>
+					<include>CookMe.localization.cfg</include>
 					<include>README.txt</include>
 					<include>Canary.inf</include>
 				</includes>
