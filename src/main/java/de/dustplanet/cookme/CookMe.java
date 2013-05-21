@@ -54,13 +54,8 @@ public class CookMe extends Plugin {
 	localization = Configuration.getPluginConfig(getName(), "localization");
 	loadLocalization();
 	loadConfig();
-//	// Try to load
-//	try {
-//	    localization.load();
-//	    config.load();
-//	} catch (IOException e) {
-//	    getLogman().logWarning("Failed to load the configs! Please report this! IOException");
-//	}
+	
+	// Load variables
 	checkStuff();
 
 	// Sets the cooldown
@@ -114,7 +109,7 @@ public class CookMe extends Plugin {
 
     // Loads the config at start
     private void loadConfig() {
-	config.addHeaderLines("For help please refer to http://forums.canarymod.net/?topic=3523.0");
+	//config.addHeaderLines("For help please refer to http://forums.canarymod.net/?topic=3523.0");
 	if (!config.containsKey("configuration.permissions")) {
 	    config.setBoolean("configuration.permissions", true);
 	}
@@ -183,7 +178,7 @@ public class CookMe extends Plugin {
 
     // Loads the localization
     private void loadLocalization() {
-	localization.addHeaderLines("The underscores are used for the different lines!");
+	//localization.addHeaderLines("The underscores are used for the different lines!");
 	if (!localization.containsKey("damage")) {
 	    localization.setString("damage", "&4You got some random damage! Eat some cooked food!");
 	}
