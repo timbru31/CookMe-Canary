@@ -1,18 +1,18 @@
+package de.dustplanet.cookme;
+
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
+import net.canarymod.api.entity.living.humanoid.Player;
 
 
 /**
- * CookeMe for CraftBukkit/Bukkit
+ * CookeMe for Canary (recode)
  * Handles the cooldown
  * 
  * Refer to the forum thread:
- * http://bit.ly/cookmebukkit
- * Refer to the dev.bukkit.org page:
- * http://bit.ly/cookmebukkitdev
+ * http://forums.canarymod.net/?topic=3523.0
  *
  * @author xGhOsTkiLLeRx
- * @thanks nisovin for his awesome code snippet!
  * 
  */
 

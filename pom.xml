@@ -16,12 +16,8 @@
 	<repositories>
 		<repository>
 			<id>Dustplanet</id>
-			<name>Dustplanet-releases</name>
-			<url>http://repo.dustplanet.de/artifactory/ext-release-local</url>
-		</repository>
-		<repository>
-			<id>Plugin Metrics</id>
-			<url>http://repo.mcstats.org/content/repositories/public</url>
+			<name>Dustplanet-snapshots</name>
+			<url>http://repo.dustplanet.de/artifactory/ext-snapshot-local</url>
 		</repository>
 	</repositories>
 
@@ -29,19 +25,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.canarymod</groupId>
-			<artifactId>CanaryMod</artifactId>
-			<version>b6.1.12</version>
-		</dependency>
-		<dependency>
-			<groupId>net.canarymod</groupId>
-			<artifactId>minecraft_servero</artifactId>
-			<version>b6.1.12</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mcstats.canary</groupId>
-			<artifactId>metrics</artifactId>
-			<version>R6</version>
-			<scope>compile</scope>
+			<artifactId>CanaryLib</artifactId>
+			<version>LATEST</version>
 		</dependency>
 	</dependencies>
 
@@ -63,32 +48,9 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<!-- Shade Plugin to include Metrics -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<artifactSet>
-								<includes>
-									<include>org.mcstats.canary:metrics</include>
-								</includes>
-							</artifactSet>
-							<!-- Set the final name -->
-							<finalName>CookMe</finalName>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
 
-		<!-- Include .yml files -->
+		<!-- Include files -->
 		<resources>
 			<resource>
 				<targetPath>.</targetPath>
@@ -113,7 +75,7 @@
 
 	<!-- Jenkins information -->
 	<ciManagement>
-		<url>http://ci.dustplanet.de/job/CookMe-Canary</url>
+		<url>http://ci.dustplanet.de/job/CookMe-Canary-Recode</url>
 		<system>jenkins</system>
 	</ciManagement>
 </project>

@@ -1,30 +1,28 @@
+package de.dustplanet.cookme;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import org.mcstats.Metrics;
-import org.mcstats.Metrics.Graph;
+import net.canarymod.Canary;
+import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.chat.TextFormat;
+import net.canarymod.config.Configuration;
+import net.canarymod.plugin.Plugin;
+import net.visualillusionsent.utils.PropertiesFile;
 
 /**
- * CookeMe for CraftBukkit/Bukkit
+ * CookeMe for Canary (recode)
  * Handles some general stuff!
  * 
  * Refer to the forum thread:
- * http://bit.ly/cookmebukkit
- * Refer to the dev.bukkit.org page:
- * http://bit.ly/cookmebukkitdev
+ * http://forums.canarymod.net/?topic=3523.0
  *
  * @author xGhOsTkiLLeRx
- * @thanks nisovin for his awesome code snippet!
  * 
  */
 
 public class CookMe extends Plugin {
-    // Logger
-    public static final Logger log = Logger.getLogger("Minecraft");
-    private String name = "CookMe";
-    private String version = "1.0";
-    private String author = "xGhOsTkiLLeRx";
     private CookMePlayerListener playerListener;
     public CooldownManager cooldownManager;
     public PropertiesFile config, localization;
@@ -36,70 +34,48 @@ public class CookMe extends Plugin {
     public String[] effects = {"damage", "death", "venom", "hungervenom", "hungerdecrease", "confusion", "blindness", "weakness", "slowness", "slowness_blocks", "instant_damage", "refusing", "wither"};	
 
     // Shutdown
+    @Override
     public void disable() {
-	// Disable command
-	etc.getInstance().removeCommand("/cookme");
-
-	// Command
-	new CookMeCommands(this);
-
+	// Clear RAM
 	itemList.clear();
 	cooldownManager.clearCooldownList();
 	
-	log.info(name + " " + version + " by " + author + " disabled");
+	// Message
+	getLogman().logInfo(getName() + " v" + getVersion() + " by " + getAuthor() + " disabled");
     }
 
     // Start
-    public void enable() {
-	// Command
-	etc.getInstance().addCommand("/cookme", "CookMe admin command");
-	playerListener = new CookMePlayerListener(this);
-    }
-
-    public void initialize() {
-	// Event
-	etc.getLoader().addListener(PluginLoader.Hook.EAT, playerListener, this, PluginListener.Priority.MEDIUM);
-	// Command
-	etc.getLoader().addListener(PluginLoader.Hook.COMMAND, new CookMeCommands(this), this, PluginListener.Priority.MEDIUM);
-
-	config = etc.getLoader().getPlugin(name).getPropertiesFile("config");
+    @Override
+    public boolean enable() {
+	// Config
+	config = Configuration.getPluginConfig(getName());
 
 	// Localization
-	localization = etc.getLoader().getPlugin(name).getPropertiesFile("localization");
+	localization = Configuration.getPluginConfig(getName(), "localization");
 	loadLocalization();
 	loadConfig();
-	// Try to load
-	try {
-	    localization.load();
-	    config.load();
-	} catch (IOException e) {
-	    log.warning("Failed to load the configs! Please report this! IOException");
-	}
+//	// Try to load
+//	try {
+//	    localization.load();
+//	    config.load();
+//	} catch (IOException e) {
+//	    getLogman().logWarning("Failed to load the configs! Please report this! IOException");
+//	}
 	checkStuff();
 
 	// Sets the cooldown
 	cooldownManager = new CooldownManager(cooldown);
 	
-	// Stats
-	try {
-	    Metrics metrics = new Metrics("CookMe", "1.0");
-	    // Construct a graph, which can be immediately used and considered as valid
-	    Graph graph = metrics.createGraph("Percentage of affected items");
-	    // Custom plotter for each item
-	    for (String itemName : itemList) {
-		graph.addPlotter(new Metrics.Plotter(itemName) {
-		    public int getValue() {
-			return 1;
-		    }
-		});
-	    }
-	    metrics.start();
-	} catch (IOException e) {
-	    log.warning("Could not start Metrics!");
-	    e.printStackTrace();
-	}
+	// Command
+	//Canary.commands().registerCommands(new CookMeCommands(this), this, false);
+	// Event
+	playerListener = new CookMePlayerListener(this);
+	Canary.hooks().registerListener(playerListener, this);
 	
-	log.info(name + " " + version + " by " + author + " initialized");
+	// Message
+	getLogman().logInfo(getName() + " v" + getVersion() + " by " + getAuthor() + " enabled");
+        
+	return true;
     }
 
     private void checkStuff() {
@@ -131,14 +107,14 @@ public class CookMe extends Plugin {
 		percentages[i] = 8.0;
 		config.setDouble("effects." + effects[i], 8.0);
 	    }
-	    log.warning(Colors.Red + "Detected that the entire procentage is higer than 100. Resetting it to default...");
+	    getLogman().logWarning(TextFormat.LIGHT_RED + "Detected that the entire procentage is higer than 100. Resetting it to default...");
 	    config.save();
 	}
     }
 
     // Loads the config at start
     private void loadConfig() {
-	// TODO HEADER config.options().header("For help please refer to http://bit.ly/cookmebukkitdev or http://bit.ly/cookmebukkit");
+	config.addHeaderLines("For help please refer to http://forums.canarymod.net/?topic=3523.0");
 	if (!config.containsKey("configuration.permissions")) {
 	    config.setBoolean("configuration.permissions", true);
 	}
@@ -207,7 +183,7 @@ public class CookMe extends Plugin {
 
     // Loads the localization
     private void loadLocalization() {
-	// TODO HEADER localization.options().header("The underscores are used for the different lines!");
+	localization.addHeaderLines("The underscores are used for the different lines!");
 	if (!localization.containsKey("damage")) {
 	    localization.setString("damage", "&4You got some random damage! Eat some cooked food!");
 	}
@@ -321,16 +297,10 @@ public class CookMe extends Plugin {
 
     // Reloads the configs via command /cookme reload
     public void loadConfigsAgain() {
-	try {
-	    config.load();
-	    config.save();
-	    checkStuff();
-	    cooldownManager.setCooldown(cooldown);
-	    localization.load();
-	    localization.save();
-	} catch (IOException e) {
-	    log.warning("Failed to save the localization! Please report this! IOException");
-	}
+	config.reload();
+	checkStuff();
+	cooldownManager.setCooldown(cooldown);
+	localization.reload();
     }
 
     // Message the sender or player
