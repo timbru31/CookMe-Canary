@@ -60,6 +60,7 @@
 					<include>config.properties</include>
 					<include>localization.properties</include>
 					<include>README.txt</include>
+					<include>canary.inf</include>
 				</includes>
 			</resource>
 		</resources>
