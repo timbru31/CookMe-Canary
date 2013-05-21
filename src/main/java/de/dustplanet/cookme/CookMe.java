@@ -5,6 +5,7 @@ import java.util.List;
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.TextFormat;
+import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.config.Configuration;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.utils.PropertiesFile;
@@ -60,7 +61,12 @@ public class CookMe extends Plugin {
 	cooldownManager = new CooldownManager(cooldown);
 	
 	// Command
-	//Canary.commands().registerCommands(new CookMeCommands(this), this, false);
+	try {
+	    Canary.commands().registerCommands(new CookMeCommands(this), this, false);
+	} catch (CommandDependencyException e) {
+	    getLogman().warning("An error while registering the commands happened! Please report this!");
+	    e.printStackTrace();
+	}
 	// Event
 	playerListener = new CookMePlayerListener(this);
 	Canary.hooks().registerListener(playerListener, this);
