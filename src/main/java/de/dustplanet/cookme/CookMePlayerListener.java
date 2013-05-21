@@ -33,7 +33,7 @@ public class CookMePlayerListener implements PluginListener {
 
     public CookMePlayerListener(CookMe instance) {
 	plugin = instance;
-	Canary.factory().getPotionFactory();
+	factory = Canary.factory().getPotionFactory();
     }
 
     @HookHandler
