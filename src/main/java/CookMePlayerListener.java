@@ -22,7 +22,8 @@ public class CookMePlayerListener extends PluginListener {
     }
 
     public boolean onEat(Player player, Item item) {
-	String effect;
+	// Just in case to prevent NPE
+	String effect = "damage";
 	Timestamp now = new Timestamp(System.currentTimeMillis());
 	// Check if player is affected
 	//TODO if (!player.hasPermission("cookme.safe")) {
@@ -47,28 +48,24 @@ public class CookMePlayerListener extends PluginListener {
 		if (i == 0) {
 		    int randomDamage = random.nextInt(9) +1;
 		    effect = plugin.localization.getString("damage");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.applayDamage(DamageSource.createPlayerDamage(player), randomDamage);
 		}			
 		// Player dies, stack minus 1
 		if (i == 1) {
 		    effect = plugin.localization.getString("death");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.setHealth(0);
 		}
 		// Random venom damage (including green hearts :) )
 		if (i == 2) {
 		    effect = plugin.localization.getString("venom");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.POISON, randomEffectStrength, randomEffectTime));
 		}
 		// Food bar turns green (poison)
 		if (i == 3) {
 		    effect = plugin.localization.getString("hungervenom");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.HUNGER, randomEffectStrength, randomEffectTime));
 		}
@@ -80,21 +77,18 @@ public class CookMePlayerListener extends PluginListener {
 			randomFoodLevel = random.nextInt(currentFoodLevel);
 		    }
 		    effect = plugin.localization.getString("hungerdecrease");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.setFoodLevel(randomFoodLevel);
 		}
 		// Confusion
 		if (i == 5) {
 		    effect = plugin.localization.getString("confusion");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.CONFUSION, randomEffectStrength, randomEffectTime));
 		}
 		// Blindness
 		if (i == 6) {
 		    effect = plugin.localization.getString("blindness");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.BLINDNESS, randomEffectStrength, randomEffectTime));
 		}
@@ -102,7 +96,6 @@ public class CookMePlayerListener extends PluginListener {
 		// Weakness
 		if (i == 7) {
 		    effect = plugin.localization.getString("weakness");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.WEAKNESS, randomEffectStrength, randomEffectTime));
 
@@ -110,7 +103,6 @@ public class CookMePlayerListener extends PluginListener {
 		// Slowness
 		if (i == 8) {
 		    effect = plugin.localization.getString("slowness");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.SLOW_DOWN, randomEffectStrength, randomEffectTime));
 
@@ -118,7 +110,6 @@ public class CookMePlayerListener extends PluginListener {
 		// Slowness for blocks
 		if (i == 9) {
 		    effect = plugin.localization.getString("slowness_blocks");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.DIG_SLOW, randomEffectStrength, randomEffectTime));
 
@@ -126,7 +117,6 @@ public class CookMePlayerListener extends PluginListener {
 		// Instant Damage
 		if (i == 10) {
 		    effect = plugin.localization.getString("instant_damage");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.HARM, randomEffectStrength, randomEffectTime));
 
@@ -134,16 +124,17 @@ public class CookMePlayerListener extends PluginListener {
 		// Refusing
 		if (i == 11) {
 		    effect = plugin.localization.getString("refusing");
-		    message(player, effect);
 		    return true;
 		}
 		// Wither effect
 		if (i == 12) {
 		    effect = plugin.localization.getString("wither");
-		    message(player, effect);
 		    decreaseItem(player);
 		    player.addPotionEffect(PotionEffect.getNewPotionEffect(PotionEffect.Type.WITHER, randomEffectStrength, randomEffectTime));
 		}
+		
+		// Message
+		message(player, effect);
 
 		// Add player to cooldown list
 		if (plugin.cooldown != 0) {
@@ -203,7 +194,7 @@ public class CookMePlayerListener extends PluginListener {
 		    // Prevent spamming
 		    if (message) {
 			CookMe.log.warning("Couldn't load the foods! Please check your config!");
-			CookMe.log.warning("The following item id/name is invalid: " + itemName);
+			CookMe.log.warning("The following item ID/name is invalid: " + itemName);
 			message = false;
 		    }
 		}
