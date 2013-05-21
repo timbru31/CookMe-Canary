@@ -146,6 +146,20 @@ public class CookMePlayerListener implements PluginListener {
 		message(player, effect);
 
 		// No health or hunger
+		plugin.getLogman().info(i + " " + hook.getLevelGain() + " " + hook.getSaturationGain());
+		if (effects == null) {
+		    plugin.getLogman().info("null");
+		} else if (effects.length == 0)  {
+		    plugin.getLogman().info("no effects");
+		}else {
+		    for (PotionEffect e : effects) {
+			if (e == null) {
+			    plugin.getLogman().info("null?");
+			}else {
+			    plugin.getLogman().info(e.getName());
+			}
+		    }
+		}
 		hook.setLevelGain(0);
 		hook.setSaturationGain(0);
 
@@ -153,16 +167,21 @@ public class CookMePlayerListener implements PluginListener {
 		if (plugin.cooldown != 0) {
 		    plugin.cooldownManager.addPlayer(player);
 		}
+
+		// Only effects on some values
+		if (i != 0 && i != 1 && i != 4 && i!= 11) {
+		    // Finally set potions
+		    hook.setPotionEffects(effects);
+		}
 	    }
 	} else if (plugin.preventVanillaPoison) {
 	    // Prevent the vanilla poison, too?
 	    if (item.getType() == ItemType.RawChicken || item.getType() == ItemType.RottenFlesh) {
 		effects = new PotionEffect[0];
 	    }
+	    // Finally set potions
+	    hook.setPotionEffects(effects);
 	}
-	
-	// Finally set potions
-	hook.setPotionEffects(effects);
     }
 
     private void message(Player player, String message) {
