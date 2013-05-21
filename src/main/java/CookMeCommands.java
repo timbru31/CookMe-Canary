@@ -28,7 +28,7 @@ public class CookMeCommands extends PluginListener {
 		    return true;
 		}
 		// help
-		else if (args[1].equalsIgnoreCase("help")) {
+		else if (args.length > 1 && args[1].equalsIgnoreCase("help")) {
 		    cookMeHelp(player);	
 		    return true;
 		} else if (args.length > 1 && args[1].equalsIgnoreCase("debug") && plugin.debug) {
