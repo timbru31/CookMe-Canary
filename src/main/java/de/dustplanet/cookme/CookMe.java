@@ -3,7 +3,7 @@ package de.dustplanet.cookme;
 import java.util.ArrayList;
 import java.util.List;
 import net.canarymod.Canary;
-import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.config.Configuration;
@@ -291,6 +291,9 @@ public class CookMe extends Plugin {
 	if (!localization.containsKey("no_number")) {
 	    localization.setString("no_number", "&4The given argument wasn't a number!");
 	}
+	if (!localization.containsKey("wrong_arguments")) {
+	    localization.setString("wrong_arguments", "&4Wrong amount of arguments or wrong arguments, see /cookme help!");
+	}
 	localization.save();
     }
 
@@ -303,15 +306,15 @@ public class CookMe extends Plugin {
     }
 
     // Message the sender or player
-    public void message(Player player, String message, String value, String percentage) {
+    public void message(MessageReceiver receiver, String message, String value, String percentage) {
 	message = message
 		.replaceAll("&([0-9a-fk-or])", "\u00A7$1")
-		.replaceAll("%version", "1.0")
+		.replaceAll("%version", getVersion())
 		.replaceAll("%effect", value)
 		.replaceAll("%value", value)
 		.replaceAll("%percentage", percentage);
-	if (player != null) {
-	    player.sendMessage(message);
+	if (receiver != null) {
+	    receiver.message(message);
 	}
     }
 }

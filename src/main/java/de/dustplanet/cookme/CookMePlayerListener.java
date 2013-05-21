@@ -43,9 +43,9 @@ public class CookMePlayerListener implements PluginListener {
 	// Just in case to prevent NPE
 	String effect = "damage";
 	Timestamp now = new Timestamp(System.currentTimeMillis());
-	// Check if player is affected
 	// EffectList
 	PotionEffect[] effects = null;
+	// Check if player is affected
 	if (!player.hasPermission("cookme.safe")) {
 	    // Check for item & right clicking
 	    if (sameItem(item) && !plugin.cooldownManager.hasCooldown(player, now)) {
@@ -70,7 +70,7 @@ public class CookMePlayerListener implements PluginListener {
 		    effect = plugin.localization.getString("damage");
 		    player.dealDamage(DamageType.GENERIC, randomDamage);
 		}			
-		// Player dies, stack minus 1
+		// Player dies
 		if (i == 1) {
 		    effect = plugin.localization.getString("death");
 		    player.kill();
@@ -145,21 +145,21 @@ public class CookMePlayerListener implements PluginListener {
 		// Message
 		message(player, effect);
 
-		// No health or hunger
+		// TODO
 		plugin.getLogman().info(i + " " + hook.getLevelGain() + " " + hook.getSaturationGain());
-		if (effects == null) {
-		    plugin.getLogman().info("null");
-		} else if (effects.length == 0)  {
+		if (effects.length == 0)  {
 		    plugin.getLogman().info("no effects");
-		}else {
+		} else {
 		    for (PotionEffect e : effects) {
 			if (e == null) {
 			    plugin.getLogman().info("null?");
-			}else {
+			} else {
 			    plugin.getLogman().info(e.getName());
 			}
 		    }
 		}
+		
+		// No health or hunger
 		hook.setLevelGain(0);
 		hook.setSaturationGain(0);
 

@@ -33,10 +33,11 @@ food=RawBeef,RawChicken,RawFish,Pork,RottenFlesh
 
 Commands & Permissions
 
-Permission: /cookme safe
+Permission: cookme.safe
 Description: No effects will appear, if a player has got this permission
 
-Permission: /cookme
+Permission: cookme.admin
+Description: Grants access to all commands below (admin commands)
 
 /cookme reload
 Description: Reloads the config
@@ -67,3 +68,6 @@ Description: Sets the minimum duration value in seconds
 
 /cookme set duration max <value>
 Description: Sets the maximum duration value in seconds
+
+/cookme debug
+Description: If debug is enabled, reduces food level for testing usage
