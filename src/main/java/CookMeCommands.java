@@ -24,12 +24,12 @@ public class CookMeCommands extends PluginListener {
 	    // reload
 	    if (player.canUseCommand("/cookme") || !plugin.permissions) {
 		if (args.length > 1 && args[1].equalsIgnoreCase("reload")) {
-		    CookMeReload(player);
+		    cookMeReload(player);
 		    return true;
 		}
 		// help
 		else if (args[1].equalsIgnoreCase("help")) {
-		    CookMeHelp(player);	
+		    cookMeHelp(player);	
 		    return true;
 		} else if (args.length > 1 && args[1].equalsIgnoreCase("debug") && plugin.debug) {
 		    player.setFoodLevel(10);
@@ -117,12 +117,12 @@ public class CookMeCommands extends PluginListener {
 		else if (args.length > 1 && args[1].equalsIgnoreCase("enable")) {
 		    // permissions
 		    if (args.length > 2 && args[2].equalsIgnoreCase("permissions")) {
-			CookMeEnablePermissions(player);
+			cookMeEnablePermissions(player);
 			return true;
 		    }
 		    // messages
 		    if (args.length > 2 && args[2].equalsIgnoreCase("messages")) {
-			CookMeEnableMessages(player);
+			cookMeEnableMessages(player);
 			return true;
 		    } else {
 			return false;
@@ -132,12 +132,12 @@ public class CookMeCommands extends PluginListener {
 		else if (args.length > 1 && args[1].equalsIgnoreCase("disable")) {
 		    // permissions
 		    if (args.length > 2 && args[2].equalsIgnoreCase("permissions")) {
-			CookMeDisablePermissions(player);
+			cookMeDisablePermissions(player);
 			return true;
 		    }
 		    // messages
 		    if (args.length > 2 && args[2].equalsIgnoreCase("messages")) {
-			CookMeDisableMessages(player);
+			cookMeDisableMessages(player);
 			return true;
 		    } else {
 			return false;
@@ -153,7 +153,7 @@ public class CookMeCommands extends PluginListener {
     }
 
     // See the help with /cookme help
-    private void CookMeHelp(Player player) {
+    private void cookMeHelp(Player player) {
 	for (int i = 1; i <= 11; i++) {
 	    String message = plugin.localization.getString("help_" + Integer.toString(i));
 	    plugin.message(player, message, null, null);
@@ -161,14 +161,14 @@ public class CookMeCommands extends PluginListener {
     }
 
     // Reloads the config with /cookme reload
-    private void CookMeReload(Player player) {
+    private void cookMeReload(Player player) {
 	plugin.loadConfigsAgain();		
 	String message = plugin.localization.getString("reload");
 	plugin.message(player, message, null, null);
     }
 
     // Enables permissions with /cookme enable permissions
-    private void CookMeEnablePermissions(Player player) {
+    private void cookMeEnablePermissions(Player player) {
 	plugin.config.setBoolean("configuration.permissions", true);
 	plugin.config.save();
 	for (int i = 1; i <= 2; i++) {
@@ -178,7 +178,7 @@ public class CookMeCommands extends PluginListener {
     }
 
     // Disables permissions with /cookme disable permissions
-    private void CookMeDisablePermissions(Player player) {
+    private void cookMeDisablePermissions(Player player) {
 	plugin.config.setBoolean("configuration.permissions", false);
 	plugin.config.save();
 	for (int i = 1; i <= 2; i++) {
@@ -188,7 +188,7 @@ public class CookMeCommands extends PluginListener {
     }
 
     // Enables messages with /cookme enable messages
-    private void CookMeEnableMessages(Player player) {
+    private void cookMeEnableMessages(Player player) {
 	plugin.config.setBoolean("configuration.messages", true);
 	plugin.config.save();
 	String message = plugin.localization.getString("enable_messages");
@@ -196,7 +196,7 @@ public class CookMeCommands extends PluginListener {
     }
 
     // Disables messages with /cookme disable messages
-    private void CookMeDisableMessages(Player player) {
+    private void cookMeDisableMessages(Player player) {
 	plugin.config.setBoolean("configuration.messages", false);
 	plugin.config.save();
 	String message = plugin.localization.getString("disable_messages");

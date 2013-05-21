@@ -20,7 +20,7 @@ public class CookMe extends Plugin {
     // Logger
     public static final Logger log = Logger.getLogger("Minecraft");
     private String name = "CookMe";
-    private String version = "1.0";
+    private String version = "1.0.1";
     private String author = "xGhOsTkiLLeRx";
     private CookMePlayerListener playerListener;
     public CooldownManager cooldownManager;
@@ -332,7 +332,7 @@ public class CookMe extends Plugin {
     public void message(Player player, String message, String value, String percentage) {
 	message = message
 		.replaceAll("&([0-9a-fk-or])", "\u00A7$1")
-		.replaceAll("%version", "1.0")
+		.replaceAll("%version", version)
 		.replaceAll("%effect", value)
 		.replaceAll("%value", value)
 		.replaceAll("%percentage", percentage);
